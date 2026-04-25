@@ -14,16 +14,20 @@ import Calculators from "./pages/Calculators";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import InteractiveSurvey from "./pages/InteractiveSurvey";
 import { Toaster } from "sonner";
 
 function Layout() {
   const { pathname } = useLocation();
   const isDashboard = pathname.startsWith("/dashboard");
+  const isSurvey = pathname.startsWith("/survey");
+  const isFullScreen = isDashboard || isSurvey;
+  
   return (
     <div className="min-h-screen bg-ink-0 text-white">
       <ScrollToTop />
-      {!isDashboard && <Navbar />}
-      <main className={isDashboard ? "" : "pt-16"}>
+      {!isFullScreen && <Navbar />}
+      <main className={isFullScreen ? "" : "pt-16"}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -35,10 +39,11 @@ function Layout() {
           <Route path="/calculators" element={<Calculators />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/survey" element={<InteractiveSurvey />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isDashboard && <Footer />}
+      {!isFullScreen && <Footer />}
       <Toaster theme="dark" position="bottom-right"
         toastOptions={{ style: { background: "#121214", border: "1px solid #27272A", color: "#fff", borderRadius: 0 } }} />
     </div>

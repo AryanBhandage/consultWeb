@@ -13,8 +13,10 @@ import {
   Activity,
   Globe2,
   Cpu,
+  MessageSquare,
 } from "lucide-react";
 import { Section, StatBlock, Pill } from "../components/UI";
+import EmpathySection from "../components/EmpathySection";
 import {
   brand,
   stats,
@@ -69,10 +71,19 @@ export default function Home() {
                 >
                   Book a 30-min diagnostic <ArrowUpRight className="w-4 h-4" />
                 </Link>
+                {/* ── NEW: Tell Us Your Challenges CTA ── */}
+                <Link
+                  to="/survey"
+                  data-testid="hero-empathy-cta"
+                  className="btn-ghost"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Tell us your challenges
+                </Link>
                 <Link
                   to="/case-studies"
                   data-testid="hero-secondary-cta"
-                  className="btn-ghost"
+                  className="text-sm text-ink-700 hover:text-white px-3 py-3 inline-flex items-center gap-2 transition-colors"
                 >
                   See client outcomes <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -241,7 +252,7 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-4">
           {testimonials.map((t, i) => (
             <div key={i} className="card" data-testid={`testimonial-${i}`}>
-              <div className="text-2xl font-display leading-snug">“{t.quote}”</div>
+              <div className="text-2xl font-display leading-snug">"{t.quote}"</div>
               <div className="mt-6 text-ink-600 text-xs font-mono tracking-widest uppercase">
                 — {t.who}
               </div>
@@ -249,6 +260,9 @@ export default function Home() {
           ))}
         </div>
       </Section>
+
+      {/* ── EMPATHY / FREE CONSULTATION SECTION (NEW) ──────────────────────── */}
+      <EmpathySection />
 
       {/* CTA */}
       <Section>

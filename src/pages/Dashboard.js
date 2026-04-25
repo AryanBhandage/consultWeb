@@ -12,6 +12,7 @@ import EfficiencyTab from "../components/dashboard/EfficiencyTab";
 import ESGTab from "../components/dashboard/ESGTab";
 import ReportsTab from "../components/dashboard/ReportsTab";
 import SettingsTab from "../components/dashboard/SettingsTab";
+import SurveyResultsTab from "../components/dashboard/SurveyResultsTab";
 import { currencyK } from "../components/dashboard/constants";
 
 // ── Mock data (no backend required) ─────────────────────────────────────────
@@ -52,15 +53,7 @@ function useSession() {
   return raw ? JSON.parse(raw) : null;
 }
 
-// Sidebar nav items
-const SIDEBAR = [
-  { icon: Home, label: "Overview", active: true },
-  { icon: TrendingUp, label: "Savings", active: false },
-  { icon: Activity, label: "Efficiency", active: false },
-  { icon: Leaf, label: "ESG", active: false },
-  { icon: FileText, label: "Reports", active: false },
-  { icon: Settings, label: "Settings", active: false },
-];
+// Sidebar nav items base
 
 export default function Dashboard() {
   const session = useSession();
@@ -69,6 +62,17 @@ export default function Dashboard() {
   const [activeNav, setActiveNav] = useState("Overview");
 
   if (!session) return <Navigate to="/login" replace />;
+
+  const isAdmin = session.email.startsWith("admin");
+  const sidebarItems = [
+    { icon: Home, label: "Overview" },
+    { icon: TrendingUp, label: "Savings" },
+    { icon: Activity, label: "Efficiency" },
+    { icon: Leaf, label: "ESG" },
+    { icon: FileText, label: "Reports" },
+    ...(isAdmin ? [{ icon: Activity, label: "Survey Results" }] : []),
+    { icon: Settings, label: "Settings" },
+  ];
 
   const logout = () => {
     localStorage.removeItem("logiveda_session");
@@ -96,7 +100,7 @@ export default function Dashboard() {
 
         {/* Nav */}
         <nav className="flex-1 py-6 px-3 space-y-1">
-          {SIDEBAR.map((item) => (
+          {sidebarItems.map((item) => (
             <button
               key={item.label}
               onClick={() => setActiveNav(item.label)}
@@ -129,7 +133,7 @@ export default function Dashboard() {
 
       {/* Mobile bottom nav */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-ink-50/95 backdrop-blur border-t border-ink-300 flex items-center justify-around px-2 py-2">
-        {SIDEBAR.slice(0, 5).map((item) => (
+        {sidebarItems.slice(0, 5).map((item) => (
           <button
             key={item.label}
             onClick={() => setActiveNav(item.label)}
@@ -187,6 +191,7 @@ export default function Dashboard() {
           {activeNav === "Efficiency" && <EfficiencyTab metrics={metrics} />}
           {activeNav === "ESG" && <ESGTab metrics={metrics} />}
           {activeNav === "Reports" && <ReportsTab />}
+          {activeNav === "Survey Results" && <SurveyResultsTab />}
           {activeNav === "Settings" && <SettingsTab session={session} />}
         </div>
       </div>

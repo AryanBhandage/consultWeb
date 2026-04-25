@@ -7,6 +7,7 @@ import { Pill } from "../components/UI";
 const DEMO_USERS = [
   { email: "demo@logiveda.io", password: "Demo@2026", name: "Demo Operator", company: "Altura Foods" },
   { email: "ops@altura.com", password: "Altura#1", name: "Rahul Sharma", company: "Altura Foods" },
+  { email: "admin@logiveda.com", password: "admin", name: "Admin", company: "Logiveda" },
 ];
 
 export default function Login() {
@@ -111,6 +112,7 @@ export default function Login() {
               <div className="bg-ink-50 border border-ink-300 p-4 text-xs font-mono text-ink-700 space-y-1" data-testid="demo-creds">
                 <div>demo@logiveda.io - Demo@2026</div>
                 <div>ops@altura.com - Altura#1</div>
+                <div className="text-volt mt-2 border-t border-ink-300 pt-2">admin@logiveda.com - admin (Admin Panel)</div>
               </div>
             </div>
             <div className="mt-6 text-xs text-ink-600">

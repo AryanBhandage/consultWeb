@@ -1,11 +1,41 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, MessageSquare } from "lucide-react";
 import { brand } from "../lib/content";
-
+import { useNavigate } from "react-router-dom";
 export default function Footer() {
+  const navigate = useNavigate();
+  const openForm = () => navigate("/survey");
+
   return (
     <footer data-testid="site-footer" className="border-t border-ink-300 bg-ink-0 mt-32">
+
+      {/* ── NEW: Footer Survey CTA Banner ─────────────────────────────────── */}
+      <div className="border-b border-ink-300 bg-ink-100">
+        <div className="section py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <MessageSquare className="w-5 h-5 text-volt shrink-0 mt-0.5" />
+            <div>
+              <div className="font-display font-semibold text-white text-sm">
+                Struggling with your supply chain?
+              </div>
+              <p className="text-ink-700 text-xs mt-0.5">
+                Share your challenges — we analyse every response and publish
+                industry insights quarterly.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={openForm}
+            data-testid="footer-survey-cta"
+            className="btn-ghost text-sm shrink-0"
+          >
+            Get free consultation <ArrowUpRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* ── Main footer grid ──────────────────────────────────────────────── */}
       <div className="section py-16 grid md:grid-cols-5 gap-10">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2">
@@ -29,10 +59,26 @@ export default function Footer() {
         <div>
           <div className="overline mb-4">Services</div>
           <ul className="space-y-2 text-sm text-ink-700">
-            <li><Link className="hover:text-white" to="/services#supply-chain-optimization">Supply Chain</Link></li>
-            <li><Link className="hover:text-white" to="/services#procurement-strategy">Procurement</Link></li>
-            <li><Link className="hover:text-white" to="/services#inventory-management">Inventory</Link></li>
-            <li><Link className="hover:text-white" to="/services#esg-consulting">ESG</Link></li>
+            <li>
+              <Link className="hover:text-white" to="/services#supply-chain-optimization">
+                Supply Chain
+              </Link>
+            </li>
+            <li>
+              <Link className="hover:text-white" to="/services#procurement-strategy">
+                Procurement
+              </Link>
+            </li>
+            <li>
+              <Link className="hover:text-white" to="/services#inventory-management">
+                Inventory
+              </Link>
+            </li>
+            <li>
+              <Link className="hover:text-white" to="/services#esg-consulting">
+                ESG
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
@@ -41,11 +87,16 @@ export default function Footer() {
             <li>{brand.contact.email}</li>
             <li>{brand.contact.phone}</li>
           </ul>
-          <Link to="/contact" data-testid="footer-cta" className="btn-primary text-sm mt-5">
+          <Link
+            to="/contact"
+            data-testid="footer-cta"
+            className="btn-primary text-sm mt-5"
+          >
             Book Consultation <ArrowUpRight className="w-4 h-4" />
           </Link>
         </div>
       </div>
+
       <div className="border-t border-ink-300">
         <div className="section py-6 flex flex-col md:flex-row gap-3 items-start md:items-center justify-between text-xs text-ink-600 font-mono uppercase tracking-widest">
           <span>2026 {brand.name} Advisory Pvt. Ltd.</span>
