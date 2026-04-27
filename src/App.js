@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import PageTransition from "./components/PageTransition";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -18,9 +20,9 @@ import InteractiveSurvey from "./pages/InteractiveSurvey";
 import { Toaster } from "sonner";
 
 function Layout() {
-  const { pathname } = useLocation();
-  const isDashboard = pathname.startsWith("/dashboard");
-  const isSurvey = pathname.startsWith("/survey");
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith("/dashboard");
+  const isSurvey = location.pathname.startsWith("/survey");
   const isFullScreen = isDashboard || isSurvey;
   
   return (
@@ -28,20 +30,22 @@ function Layout() {
       <ScrollToTop />
       {!isFullScreen && <Navbar />}
       <main className={isFullScreen ? "" : "pt-16"}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/industries" element={<Industries />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/insights" element={<Insights />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/calculators" element={<Calculators />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/survey" element={<InteractiveSurvey />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+            <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+            <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
+            <Route path="/industries" element={<PageTransition><Industries /></PageTransition>} />
+            <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
+            <Route path="/insights" element={<PageTransition><Insights /></PageTransition>} />
+            <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+            <Route path="/calculators" element={<PageTransition><Calculators /></PageTransition>} />
+            <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+            <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
+            <Route path="/survey" element={<PageTransition><InteractiveSurvey /></PageTransition>} />
+            <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+          </Routes>
+        </AnimatePresence>
       </main>
       {!isFullScreen && <Footer />}
       <Toaster theme="dark" position="bottom-right"

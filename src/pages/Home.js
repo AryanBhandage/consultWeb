@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -35,6 +36,19 @@ const iconMap = {
   leaf: Leaf,
 };
 
+const heroContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+  },
+};
+
+const heroItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
 export default function Home() {
   return (
     <div data-testid="page-home">
@@ -45,9 +59,17 @@ export default function Home() {
         <div className="noise" />
         <div className="section relative pt-20 md:pt-28 pb-24 md:pb-32">
           <div className="grid lg:grid-cols-12 gap-10 items-end">
-            <div className="lg:col-span-8">
-              <Pill>Supply Chain · Ops · ESG</Pill>
-              <h1
+            <motion.div 
+              className="lg:col-span-8"
+              variants={heroContainerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.div variants={heroItemVariants}>
+                <Pill>Supply Chain · Ops · ESG</Pill>
+              </motion.div>
+              <motion.h1
+                variants={heroItemVariants}
                 data-testid="hero-title"
                 className="font-display text-5xl sm:text-6xl lg:text-7xl leading-[0.95] tracking-tighter font-bold mt-6"
               >
@@ -56,14 +78,14 @@ export default function Home() {
                 for the <span className="text-volt">next-decade</span>
                 <br />
                 supply chain.
-              </h1>
-              <p className="mt-6 max-w-2xl text-ink-700 text-lg">
+              </motion.h1>
+              <motion.p variants={heroItemVariants} className="mt-6 max-w-2xl text-ink-700 text-lg">
                 {brand.name} is a modern consulting firm that turns tangled
                 supply chains into data-driven growth engines. We cut cost, lift
                 service, and bake sustainability into every node — in weeks,
                 not years.
-              </p>
-              <div className="mt-10 flex flex-wrap items-center gap-3">
+              </motion.p>
+              <motion.div variants={heroItemVariants} className="mt-10 flex flex-wrap items-center gap-3">
                 <Link
                   to="/contact"
                   data-testid="hero-primary-cta"
@@ -87,8 +109,8 @@ export default function Home() {
                 >
                   See client outcomes <ArrowRight className="w-4 h-4" />
                 </Link>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             <div className="lg:col-span-4">
               <div className="card group relative">
