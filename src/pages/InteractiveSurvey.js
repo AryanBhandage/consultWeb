@@ -175,14 +175,26 @@ export default function InteractiveSurvey() {
     return prevIdx;
   };
 
+  const saveResponse = async (finalAnswers) => {
+    try {
+      await fetch("http://localhost:5000/api/responses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(finalAnswers)
+      });
+    } catch (e) {
+      console.warn("Backend unavailable, saving to localStorage fallback.");
+      const existing = JSON.parse(localStorage.getItem("survey_responses") || "[]");
+      existing.push({ ...finalAnswers, timestamp: new Date().toISOString() });
+      localStorage.setItem("survey_responses", JSON.stringify(existing));
+    }
+    setCompleted(true);
+  };
+
   const handleNext = () => {
     const nextIdx = getNextIdx(currentIdx, answers);
     if (nextIdx >= SURVEY_QUESTIONS.length) {
-      // Save to localStorage
-      const existing = JSON.parse(localStorage.getItem("survey_responses") || "[]");
-      existing.push({ ...answers, timestamp: new Date().toISOString() });
-      localStorage.setItem("survey_responses", JSON.stringify(existing));
-      setCompleted(true);
+      saveResponse(answers);
     } else {
       setCurrentIdx(nextIdx);
     }
@@ -206,10 +218,7 @@ export default function InteractiveSurvey() {
         setTimeout(() => {
           const nextIdx = getNextIdx(currentIdx, updated);
           if (nextIdx >= SURVEY_QUESTIONS.length) {
-            const existing = JSON.parse(localStorage.getItem("survey_responses") || "[]");
-            existing.push({ ...updated, timestamp: new Date().toISOString() });
-            localStorage.setItem("survey_responses", JSON.stringify(existing));
-            setCompleted(true);
+            saveResponse(updated);
           } else {
             setCurrentIdx(nextIdx);
           }

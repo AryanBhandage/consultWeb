@@ -6,13 +6,28 @@ import {
 import { Users, FileText, BarChart3, Database } from "lucide-react";
 
 export default function SurveyResultsTab() {
-  const [responses, setResponses] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("survey_responses") || "[]");
-    } catch {
-      return [];
-    }
-  });
+  const [responses, setResponses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    fetch('http://localhost:5000/api/responses')
+      .then(res => res.json())
+      .then(data => {
+        setResponses(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error fetching responses:", err);
+        setLoading(false);
+        // Fallback to local storage if backend is not running
+        try {
+          const localData = JSON.parse(localStorage.getItem("survey_responses") || "[]");
+          setResponses(localData);
+        } catch {
+          // ignore
+        }
+      });
+  }, []);
 
   const COLORS = ["#ccff00", "#a3cc00", "#7a9900", "#526600", "#3d4d00", "#293300", "#f4ffb3"];
 
